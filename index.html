@@ -16,9 +16,9 @@
     crossorigin=""></script>
 
     <style>
-        #map { height: 900px; }
+        #map { height: 620px; }
     </style>
-    <link rel="stylesheet" href="darkTheme.css">
+    <link rel="stylesheet" href="Theme_dark.css">
 
     <script src="area/statesUs.js"></script>
     <script src="area/dhanMondi.js"></script>
@@ -26,6 +26,13 @@
     <script src="area/purbachal.js"></script>
     <script src="area/uttaraSector3.js"></script>
     <script src="area/bashundhara.js"></script>
+    <script src="area/lalmatia.js"></script>
+    <script src="area/shyamoli.js"></script>
+    <script src="area/jigatola.js"></script>
+    <script src="area/sherEbanglaNagar.js"></script>
+    <script src="area/monipuripara.js"></script>
+    <script src="area/tejgaon.js"></script>
+    <script src="area/motijheel.js"></script>
     
 </head>
 <body>
@@ -33,10 +40,19 @@
 
 </body>
 <script>
-    var map = L.map('map').setView([23.762055, 90.393019], 13);
+    var map = L.map('map').setView([23.788212, 90.399971], 11);
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {maxZoom: 24, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>', className: 'map-tiles'}).addTo(map);
+    /*L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+    */
+
+    var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+
 
     navigator.geolocation.watchPosition(success, error);
 
@@ -72,8 +88,8 @@
     }
 
     var greenIcon = L.icon({
-    iconUrl: 'car.png',
-    shadowUrl: 'leaf-shadow.png',
+    iconUrl: 'images/leaf-green.png',
+    shadowUrl: 'images/leaf-shadow.png',
 
     iconSize:     [38, 95], // size of the icon
     shadowSize:   [50, 64], // size of the shadow
@@ -82,25 +98,78 @@
     popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
 
-    L.marker([23.829104179, 90.36438379], {icon: greenIcon}).addTo(map);
+    //L.marker([23.815201, 90.425581], {icon: greenIcon}).addTo(map);
 
     function style(feature) {
         return {
-            fillColor: '#FD8D3C',
+            fillColor: '#e34a33',
             weight: 2,
             opacity: 1,
             color: 'white',
             dashArray: '3',
-            fillOpacity: 0.7
+            fillOpacity: 0.6
         };
     }
     
     L.geoJSON(statesData, {style:style}).addTo(map);
-    L.geoJSON(uttaraSector3).addTo(map);
-    L.geoJSON(dhanmondi, {style:style}).addTo(map);
-    L.geoJSON(bashundhara, {style:style}).addTo(map);
-    L.geoJSON(kalabagan, {style:style}).addTo(map);
-    L.geoJSON(purbachal, {style:style}).addTo(map);
+    L.geoJSON(uttaraSector3, {style:style}).addTo(map);
+    L.geoJSON(dhanmondi).addTo(map);
+    L.geoJSON(bashundhara).addTo(map);
+    L.geoJSON(kalabagan).addTo(map);
+    //L.geoJSON(purbachal, {style:style}).addTo(map);
+    L.geoJSON(lalmatia).addTo(map);
+    //L.geoJSON(shyamoli).addTo(map);
+    L.geoJSON(jigatola).addTo(map);
+    L.geoJSON(sherEbanglaNagar).addTo(map);
+    L.geoJSON(monipuripara, {style:style}).addTo(map);
+    L.geoJSON(motijheel, {style:style}).addTo(map);
+    //L.geoJSON(tejgaon).addTo(map);
+
+
+
+
+    
+
+    /*var streets = L.tileLayer(mapboxUrl, 
+    {id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, 
+    attribution: mapboxAttribution});*/
+
+    var CyclOSM = L.tileLayer('https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', {
+	maxZoom: 20,
+	attribution: '<a href="https://github.com/cyclosm/cyclosm-cartocss-style/releases" title="CyclOSM - Open Bicycle render">CyclOSM</a> | Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+
+    var OpenStreetMap_France = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+	maxZoom: 20,
+	attribution: '&copy; OpenStreetMap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+
+    var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    });
+        
+
+    /*var map = L.map('map', {
+        center: [39.73, -104.99],
+        zoom: 10,
+        layers: [osm, cities]
+    });*/
+
+    var baseMaps = {
+    "OpenStreetMap": osm,
+    "CycleOsm":CyclOSM,
+    "France_style":OpenStreetMap_France,
+    "satelite": Esri_WorldImagery,
+    "mapbox":mapbox
+    
+    };
+
+    // var overlayMaps = {
+    //     "Cities": marker
+    // };
+
+    var layerControl = L.control.layers(baseMaps).addTo(map);
+
 </script>
 
 </html>
