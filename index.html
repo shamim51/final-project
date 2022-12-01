@@ -16,7 +16,7 @@
     crossorigin=""></script>
 
     <style>
-        #map { height: 620px; }
+        #map { height: 900px; }
     </style>
     <link rel="stylesheet" href="Theme_dark.css">
 
@@ -48,22 +48,19 @@
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
     */
 
-    var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '© OpenStreetMap'
-    }).addTo(map);
-
+    var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19}).addTo(map);
 
 
     navigator.geolocation.watchPosition(success, error);
 
     let marker, circle;
+    let lat, lng;
 
     function success(pos){
-        const lat = pos.coords.latitude;
+        lat = pos.coords.latitude;
         console.log(lat);
         
-        const lng = pos.coords.longitude;
+        lng = pos.coords.longitude;
         console.log(lng);
         const accuracy = pos.coords.accuracy;
 
@@ -99,7 +96,7 @@
     popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
 
-    //L.marker([23.815201, 90.425581], {icon: greenIcon}).addTo(map);
+    marker = L.marker([23.815201, 90.425581], {icon: greenIcon}).addTo(map);
 
     function style(feature) {
         return {
@@ -114,14 +111,14 @@
     
     L.geoJSON(statesData, {style:style}).addTo(map);
     L.geoJSON(uttaraSector3, {style:style}).addTo(map);
-    L.geoJSON(dhanmondi).addTo(map);
-    L.geoJSON(bashundhara).addTo(map);
-    L.geoJSON(kalabagan).addTo(map);
+    L.geoJSON(dhanmondi,{style:style}).addTo(map);
+    L.geoJSON(bashundhara, {style:style}).addTo(map);
+    L.geoJSON(kalabagan, {style:style}).addTo(map);
     //L.geoJSON(purbachal, {style:style}).addTo(map);
-    L.geoJSON(lalmatia).addTo(map);
-    //L.geoJSON(shyamoli).addTo(map);
-    L.geoJSON(jigatola).addTo(map);
-    L.geoJSON(sherEbanglaNagar).addTo(map);
+    L.geoJSON(lalmatia, {style:style}).addTo(map);
+    L.geoJSON(shyamoli, {style:style}).addTo(map);
+    L.geoJSON(jigatola, {style:style}).addTo(map);
+    L.geoJSON(sherEbanglaNagar, {style:style}).addTo(map);
     L.geoJSON(monipuripara, {style:style}).addTo(map);
     L.geoJSON(motijheel, {style:style}).addTo(map);
     //L.geoJSON(tejgaon).addTo(map);
@@ -130,11 +127,6 @@
 
 
 
-    
-
-    /*var streets = L.tileLayer(mapboxUrl, 
-    {id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, 
-    attribution: mapboxAttribution});*/
 
     var CyclOSM = L.tileLayer('https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', {
 	maxZoom: 20,
@@ -161,8 +153,7 @@
     "OpenStreetMap": osm,
     "CycleOsm":CyclOSM,
     "France_style":OpenStreetMap_France,
-    "satelite": Esri_WorldImagery,
-    "mapbox":mapbox
+    "satelite": Esri_WorldImagery
     
     };
 
@@ -171,6 +162,61 @@
     // };
 
     var layerControl = L.control.layers(baseMaps).addTo(map);
+
+
+    let arr = [
+                [
+                    37.799289,
+                    -122.266433
+                ],
+                [
+                -74.828057,45.018503
+                ],
+                [
+                    90.43089103637612,
+                    23.809003979270642
+                ],
+                [
+                    90.43206280959629,
+                    23.809003979270642
+                ],
+                [
+                    90.43277297518347,
+                    23.809003979270642
+                ]
+            ]; 
+            
+            console.log(arr[1]);
+
+            lat = arr[1][0];
+            lng = arr[1][1];
+
+            console.log("lat = "+lat);
+            console.log("lng = "+lng);
+
+            if(marker){
+                //map.removeLayer(marker);
+                //L.marker([23.8152, 90.425581], {icon: greenIcon}).addTo(map);
+            }
+
+            //marker = L.marker([lat,lng]).addTo(map);
+            //L.marker([lat, lng]).addTo(map);
+            //L.marker([lat, lng], {icon: greenIcon}).addTo(map);
+            //marker.setLatLng([90.33582398744619, 23.78423442270808]).update(); 
+            
+            /*for (var i = 0; i < 4; i++) {
+                // if(marker){
+                //     map.removeLayer(marker);
+                // }
+                L.marker([23.815201, 90.425581], {icon: greenIcon}).addTo(map);
+                //L.marker([23.815201, 90.425581]).addTo(map);
+        
+                //map.fitBounds(circle.getBounds())
+                //L.marker(arr[i]).addTo(map);
+            }*/
+            
+            
+            //L.marker(arr(0)).addTo(map);
 
 </script>
 
