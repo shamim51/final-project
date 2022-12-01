@@ -16,7 +16,7 @@
     crossorigin=""></script>
 
     <style>
-        #map { height: 900px; }
+        #map { height: 100vh; }
     </style>
     <link rel="stylesheet" href="Theme_dark.css">
 
@@ -34,10 +34,15 @@
     <script src="area/tejgaon.js"></script>
     <script src="area/motijheel.js"></script>
     <script src="area/dhakaCityCorporation.js"></script>
+    <script src="area/uttara.js"></script>
+    <script src="area/crime.js"></script>
+    <script src="cityCorporationCoordinates.js"></script>
     
 </head>
 <body>
     <div id="map"></div>
+    <button onclick="myFunction()">Click me</button>
+
 
 </body>
 <script>
@@ -51,12 +56,29 @@
     var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19}).addTo(map);
 
 
-    navigator.geolocation.watchPosition(success, error);
+    //navigator.geolocation.watchPosition(success, error);
 
-    let marker, circle;
+    var marker = L.marker([51.5, -0.09]).addTo(map);
+
+
+    /*
     let lat, lng;
+    lat = 23.790685;
+    console.log(lat);
+        
+    lng = 450.406666;
+    console.log(lng);
+    //const accuracy = pos.coords.accuracy;
 
-    function success(pos){
+        
+    L.marker([lat, lng]).addTo(map);
+    */
+    //ircle = L.circle([lat, lng], {radius : accuracy});
+
+    //map.fitBounds(circle.getBounds())
+
+    /*function success(pos){
+        let lat, lng;
         lat = pos.coords.latitude;
         console.log(lat);
         
@@ -72,7 +94,7 @@
         circle = L.circle([lat, lng], {radius : accuracy});
 
         map.fitBounds(circle.getBounds())
-    }
+    }*/
 
     function error(err){
         if(err.code === 1){
@@ -85,32 +107,23 @@
 
     }
 
-    var greenIcon = L.icon({
-    iconUrl: 'images/leaf-green.png',
-    shadowUrl: 'images/leaf-shadow.png',
+    
 
-    iconSize:     [38, 95], // size of the icon
-    shadowSize:   [50, 64], // size of the shadow
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62],  // the same for the shadow
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-    });
-
-    marker = L.marker([23.815201, 90.425581], {icon: greenIcon}).addTo(map);
+    //marker = L.marker([23.815201, 90.425581], {icon: greenIcon}).addTo(map);
 
     function style(feature) {
         return {
-            fillColor: '#e34a33',
-            weight: 2,
-            opacity: 1,
-            color: 'white',
+            fillColor: 'green',
+            weight: 3,
+            opacity: 100,
+            color: 'black',
             dashArray: '3',
-            fillOpacity: 0.6
+            fillOpacity: 0.1
         };
     }
     
     L.geoJSON(statesData, {style:style}).addTo(map);
-    L.geoJSON(uttaraSector3, {style:style}).addTo(map);
+    //L.geoJSON(uttaraSector3, {style:style}).addTo(map);
     L.geoJSON(dhanmondi,{style:style}).addTo(map);
     L.geoJSON(bashundhara, {style:style}).addTo(map);
     L.geoJSON(kalabagan, {style:style}).addTo(map);
@@ -121,8 +134,47 @@
     L.geoJSON(sherEbanglaNagar, {style:style}).addTo(map);
     L.geoJSON(monipuripara, {style:style}).addTo(map);
     L.geoJSON(motijheel, {style:style}).addTo(map);
+    L.geoJSON(uttara, {style:style}).addTo(map);
     //L.geoJSON(tejgaon).addTo(map);
-    L.geoJSON(dhakaCityCorporation).addTo(map);
+    L.geoJSON(dhakaCityCorporation, {style:style}).addTo(map);
+    L.geoJSON(crime).addTo(map);
+
+    var india = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "coordinates": [
+          84.84627836943275,
+          25.03258322413761
+        ],
+        "type": "Point"
+      }
+    }
+  ]
+}
+
+    var mayanmar = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "coordinates": [
+          96.57727165677954,
+          20.80831185314335
+        ],
+        "type": "Point"
+      }
+    }
+  ]
+}
+    
+    L.geoJSON(mayanmar).addTo(map);
+    L.geoJSON(india).addTo(map);
 
 
 
@@ -166,54 +218,86 @@
 
     let arr = [
                 [
-                    37.799289,
-                    -122.266433
+                    89.340577078992,
+                    22.349070006811274
                 ],
                 [
-                -74.828057,45.018503
+                    90.25729818013554,
+                    22.27283695767278
                 ],
                 [
-                    90.43089103637612,
-                    23.809003979270642
+                    92.13194133079071,
+                    24.831378914654636
                 ],
                 [
-                    90.43206280959629,
-                    23.809003979270642
-                ],
-                [
-                    90.43277297518347,
-                    23.809003979270642
+                    88.36205455529768,
+                    26.520826205514453
                 ]
             ]; 
+
+    var rangpur = {
+        "type": "FeatureCollection",
+        "features": [
+            {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "coordinates": [
+                arr[2][0],
+                arr[2][1]
+                ],
+                "type": "Point"
+            }
+            }
+        ]
+    }
+
+    L.geoJSON(rangpur).addTo(map);
             
-            console.log(arr[1]);
+        
 
-            lat = arr[1][0];
-            lng = arr[1][1];
+            // L.marker(arr[0]).addTo(map);
 
-            console.log("lat = "+lat);
-            console.log("lng = "+lng);
 
-            if(marker){
-                //map.removeLayer(marker);
-                //L.marker([23.8152, 90.425581], {icon: greenIcon}).addTo(map);
+            // L.marker(arr[10]).addTo(map);
+            // L.marker(arr[3]).addTo(map);
+            // L.marker(arr[8]).addTo(map);
+            // L.marker(arr[7]).addTo(map);
+            // L.marker(arr[6]).addTo(map);
+            // L.marker(arr[4]).addTo(map);
+            // L.marker(arr[9]).addTo(map);
+            // L.marker(arr[11]).addTo(map);
+            // L.marker(arr[1]).addTo(map);
+
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
             }
 
-            //marker = L.marker([lat,lng]).addTo(map);
-            //L.marker([lat, lng]).addTo(map);
-            //L.marker([lat, lng], {icon: greenIcon}).addTo(map);
-            //marker.setLatLng([90.33582398744619, 23.78423442270808]).update(); 
+            function myFunction() {
+                for (var i = 0; i < 3000; i++) {
+                    var rangpur = {
+                    "type": "FeatureCollection",
+                    "features": [
+                        {
+                        "type": "Feature",
+                        "properties": {},
+                        "geometry": {
+                            "coordinates": [
+                            values[i][0],
+                            values[i][1]
+                            ],
+                            "type": "Point"
+                        }
+                        }
+                    ]
+                    }
+
+                    
+                    L.geoJSON(rangpur).addTo(map);;
+                }
+                
+            }
             
-            /*for (var i = 0; i < 4; i++) {
-                // if(marker){
-                //     map.removeLayer(marker);
-                // }
-                L.marker([23.815201, 90.425581], {icon: greenIcon}).addTo(map);
-                //L.marker([23.815201, 90.425581]).addTo(map);
-        
-                //map.fitBounds(circle.getBounds())
-                //L.marker(arr[i]).addTo(map);
-            }*/
             
             
             //L.marker(arr(0)).addTo(map);
