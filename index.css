@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    
+}
+
+.leftContainer{
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+
+    border-radius: 1%;
+    padding: 10px;
+    border: 5px solid black;
+    margin: 0;
+
+    height: 100vh;
+    overflow: auto;
+
+    background: whitesmoke;
+}
+
+.rightContainer{
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+
+    border-radius: 1%;
+    padding: 10px;
+    border: 5px solid black;
+    margin: 0;
+}
+
+
+#map{
+    height: 90vh;
+}
+
+.leftContainer .heading{
+    text-align: center;
+    color: blue;
+}

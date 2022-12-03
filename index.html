@@ -15,10 +15,13 @@
     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
     crossorigin=""></script>
 
-    <style>
-        #map { height: 100vh; }
-    </style>
+
+    
+    <link rel="stylesheet" href="index.css">
+
     <link rel="stylesheet" href="Theme_dark.css">
+    <link rel="stylesheet" href="./dist/MarkerCluster.css">
+    <link rel="stylesheet" href="./dist/MarkerCluster.Default.css">
 
     <script src="area/statesUs.js"></script>
     <script src="area/dhanMondi.js"></script>
@@ -37,47 +40,83 @@
     <script src="area/uttara.js"></script>
     <script src="area/crime.js"></script>
     <script src="cityCorporationCoordinates.js"></script>
+    <script src="area/bangladesh.js"></script>
+    <script src="area/ramna.js"></script>
+    <script src="area/store.js"></script>
+
+    <script src="./dist/leaflet.markercluster.js"></script>
+    
     
 </head>
 <body>
-    <div id="map"></div>
-    <button onclick="myFunction()">Click me</button>
-
-
+    <div class="container">
+        <div class="leftContainer">
+            <div class="heading">
+                <h1>Stories</h1>
+            </div>
+            <div>
+                <ul class="list">
+                    
+                </ul>
+            </div>
+            
+        </div>
+        <div class="rightContainer" class="Div">
+            <div class="Div">
+                <table>
+                    <tr>
+                        <td>
+                            <button onclick="showArea()">Show Area wise crime </button>
+                        </td>
+                        <td>
+                            <button>show nearby parking</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="map" class="Div"></div>
+            
+        </div>
+    </div>
 </body>
+
 <script>
-    var map = L.map('map').setView([23.788212, 90.399971], 11);
+    var map = L.map('map').setView([23.788212, 90.399971], 14);
+
+    const key = 'kyStKR2HkmDzAQngf5FW';
+    var bright = L.tileLayer(`https://api.maptiler.com/maps/bright-v2/{z}/{x}/{y}.png?key=kyStKR2HkmDzAQngf5FW`,{ //style URL
+        tileSize: 512,
+        zoomOffset: -1,
+        minZoom: 1,
+        attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+        crossOrigin: true
+    });
 
     /*L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
     */
 
-    var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19}).addTo(map);
+    var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxNativeZoom: 19, 
+    maxZoom: 20 }).addTo(map);
+    
+    var CyclOSM = L.tileLayer('https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', {
+	maxZoom: 20});
+
+    var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    });
 
 
-    //navigator.geolocation.watchPosition(success, error);
+    
+    navigator.geolocation.watchPosition(success, error);
 
-    var marker = L.marker([51.5, -0.09]).addTo(map);
+    var marker, circle;// = L.marker([51.5, -0.09], {icon:greenIcon}).addTo(map);
 
 
-    /*
-    let lat, lng;
-    lat = 23.790685;
-    console.log(lat);
-        
-    lng = 450.406666;
-    console.log(lng);
-    //const accuracy = pos.coords.accuracy;
+   
 
-        
-    L.marker([lat, lng]).addTo(map);
-    */
-    //ircle = L.circle([lat, lng], {radius : accuracy});
-
-    //map.fitBounds(circle.getBounds())
-
-    /*function success(pos){
+    function success(pos){
         let lat, lng;
         lat = pos.coords.latitude;
         console.log(lat);
@@ -94,7 +133,7 @@
         circle = L.circle([lat, lng], {radius : accuracy});
 
         map.fitBounds(circle.getBounds())
-    }*/
+    }
 
     function error(err){
         if(err.code === 1){
@@ -109,113 +148,48 @@
 
     
 
-    //marker = L.marker([23.815201, 90.425581], {icon: greenIcon}).addTo(map);
-
+    
     function style(feature) {
         return {
             fillColor: 'green',
-            weight: 3,
+            weight: 2,
             opacity: 100,
             color: 'black',
             dashArray: '3',
-            fillOpacity: 0.1
+            fillOpacity: 0
+        };
+    }
+    function style2(feature) {
+        return {
+            fillColor: 'red',
+            weight: 1,
+            opacity: 100,
+            color: 'black',
+            dashArray: '3',
+            fillOpacity: 0.9
         };
     }
     
-    L.geoJSON(statesData, {style:style}).addTo(map);
+    //L.geoJSON(statesData, {style:style}).addTo(map);
     //L.geoJSON(uttaraSector3, {style:style}).addTo(map);
-    L.geoJSON(dhanmondi,{style:style}).addTo(map);
-    L.geoJSON(bashundhara, {style:style}).addTo(map);
-    L.geoJSON(kalabagan, {style:style}).addTo(map);
+    // L.geoJSON(dhanmondi,{style:style2}).addTo(map);
+    // L.geoJSON(bashundhara, {style:style2}).addTo(map);
+    // L.geoJSON(kalabagan, {style:style2}).addTo(map);
     //L.geoJSON(purbachal, {style:style}).addTo(map);
-    L.geoJSON(lalmatia, {style:style}).addTo(map);
-    L.geoJSON(shyamoli, {style:style}).addTo(map);
-    L.geoJSON(jigatola, {style:style}).addTo(map);
-    L.geoJSON(sherEbanglaNagar, {style:style}).addTo(map);
-    L.geoJSON(monipuripara, {style:style}).addTo(map);
-    L.geoJSON(motijheel, {style:style}).addTo(map);
-    L.geoJSON(uttara, {style:style}).addTo(map);
+    // L.geoJSON(lalmatia, {style:style2}).addTo(map);
+    // L.geoJSON(shyamoli, {style:style2}).addTo(map);
+    // L.geoJSON(jigatola, {style:style2}).addTo(map);
+    // L.geoJSON(sherEbanglaNagar, {style:style2}).addTo(map);
+    // L.geoJSON(monipuripara, {style:style2}).addTo(map);
+    // L.geoJSON(motijheel, {style:style2}).addTo(map);
+    // L.geoJSON(uttara, {style:style2}).addTo(map);
     //L.geoJSON(tejgaon).addTo(map);
+    //L.geoJSON(ramna, {style:style2}).addTo(map);
     L.geoJSON(dhakaCityCorporation, {style:style}).addTo(map);
-    L.geoJSON(crime).addTo(map);
 
-    var india = {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "coordinates": [
-          84.84627836943275,
-          25.03258322413761
-        ],
-        "type": "Point"
-      }
-    }
-  ]
-}
-
-    var mayanmar = {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "coordinates": [
-          96.57727165677954,
-          20.80831185314335
-        ],
-        "type": "Point"
-      }
-    }
-  ]
-}
     
-    L.geoJSON(mayanmar).addTo(map);
-    L.geoJSON(india).addTo(map);
 
-
-
-
-
-    var CyclOSM = L.tileLayer('https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', {
-	maxZoom: 20,
-	attribution: '<a href="https://github.com/cyclosm/cyclosm-cartocss-style/releases" title="CyclOSM - Open Bicycle render">CyclOSM</a> | Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    });
-
-    var OpenStreetMap_France = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-	maxZoom: 20,
-	attribution: '&copy; OpenStreetMap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    });
-
-    var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-    });
-        
-
-    /*var map = L.map('map', {
-        center: [39.73, -104.99],
-        zoom: 10,
-        layers: [osm, cities]
-    });*/
-
-    var baseMaps = {
-    "OpenStreetMap": osm,
-    "CycleOsm":CyclOSM,
-    "France_style":OpenStreetMap_France,
-    "satelite": Esri_WorldImagery
-    
-    };
-
-    // var overlayMaps = {
-    //     "Cities": marker
-    // };
-
-    var layerControl = L.control.layers(baseMaps).addTo(map);
-
-
+/*
     let arr = [
                 [
                     89.340577078992,
@@ -253,54 +227,109 @@
     }
 
     L.geoJSON(rangpur).addTo(map);
+
+    */
             
         
-
-            // L.marker(arr[0]).addTo(map);
-
-
-            // L.marker(arr[10]).addTo(map);
-            // L.marker(arr[3]).addTo(map);
-            // L.marker(arr[8]).addTo(map);
-            // L.marker(arr[7]).addTo(map);
-            // L.marker(arr[6]).addTo(map);
-            // L.marker(arr[4]).addTo(map);
-            // L.marker(arr[9]).addTo(map);
-            // L.marker(arr[11]).addTo(map);
-            // L.marker(arr[1]).addTo(map);
-
-            function sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
-
-            function myFunction() {
-                for (var i = 0; i < 3000; i++) {
-                    var rangpur = {
-                    "type": "FeatureCollection",
-                    "features": [
-                        {
-                        "type": "Feature",
-                        "properties": {},
-                        "geometry": {
-                            "coordinates": [
-                            values[i][0],
-                            values[i][1]
-                            ],
-                            "type": "Point"
-                        }
-                        }
-                    ]
-                    }
-
-                    
-                    L.geoJSON(rangpur).addTo(map);;
-                }
+    function myFunction() {
+        
+        L.geoJSON(crime, myLayerOptions, markers).addTo(map);
                 
-            }
+    }
+
+
+    var markers = L.markerClusterGroup();
             
-            
-            
-            //L.marker(arr(0)).addTo(map);
+    function createCustomIcon (feature, latlng) {
+        let myIcon = L.icon({
+        iconUrl: 'images/crime.png',
+        shadowUrl: 'images/leaf-shadow.png',
+        iconSize:     [35, 40], // width and height of the image in pixels
+        shadowSize:   [35, 20], // width, height of optional shadow image
+        iconAnchor:   [12, 12], // point of the icon which will correspond to marker's location
+        shadowAnchor: [12, 6],  // anchor point of the shadow. should be offset
+        popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+        })
+        return markers.addLayer(L.marker(latlng, { icon: myIcon }))
+    }
+
+    // create an options object that specifies which function will called on each feature
+    let myLayerOptions = {
+        pointToLayer: createCustomIcon
+    }
+
+    L.geoJSON(crime, myLayerOptions, markers).addTo(map);
+
+    // create the GeoJSON layer
+    //var crimes = L.geoJSON(crime, myLayerOptions, markers);
+                
+    //map.addLayer(markers);
+    let crimes;
+    function showArea() {
+        //L.geoJSON(uttaraSector3, {style:style}).addTo(map);
+        L.geoJSON(dhanmondi,{style:style2}).addTo(map);
+        L.geoJSON(bashundhara, {style:style2}).addTo(map);
+        L.geoJSON(kalabagan, {style:style2}).addTo(map);
+        L.geoJSON(purbachal, {style:style2}).addTo(map);
+        L.geoJSON(lalmatia, {style:style2}).addTo(map);
+        L.geoJSON(shyamoli, {style:style2}).addTo(map);
+        L.geoJSON(jigatola, {style:style2}).addTo(map);
+        L.geoJSON(sherEbanglaNagar, {style:style2}).addTo(map);
+        L.geoJSON(monipuripara, {style:style2}).addTo(map);
+        L.geoJSON(motijheel, {style:style2}).addTo(map);
+        L.geoJSON(uttara, {style:style2}).addTo(map);
+        L.geoJSON(ramna, {style:style2}).addTo(map);
+    }
+
+    var baseMaps = {
+    "OpenStreetMap": osm,
+    "CycleOsm":CyclOSM,
+    "satelite": Esri_WorldImagery,
+    "Bright":bright
+    //"crime": crimes
+    
+    };
+
+    
+
+    var layerControl = L.control.layers(baseMaps).addTo(map);
+
+
+
+
+
+    function generateList() {
+        const ul = document.querySelector('.list');
+        storeList.forEach((shop) => {
+            const li = document.createElement('li');
+            const div = document.createElement('div');
+            const a = document.createElement('a');
+            const p = document.createElement('p');
+            a.addEventListener('click', () => {
+                flyToStore(shop);
+            });
+            div.classList.add('shop-item');
+            a.innerText = shop.properties.name;
+            a.href = '#';
+            p.innerText = shop.properties.address;
+
+            div.appendChild(a);
+            div.appendChild(p);
+            li.appendChild(div);
+            ul.appendChild(li);
+        });
+    }
+
+    generateList();
+
+
+    function flyToStore(store) {
+        const lat = store.geometry.coordinates[1];
+        const lng = store.geometry.coordinates[0];
+        map.flyTo([lat, lng], 18, {
+            duration: 2
+        });
+    }
 
 </script>
 
