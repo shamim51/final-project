@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h1>Enter Your House Address</h1>
+        <form action="">
+            <label for="houseAddress">House Address</label>
+            <input type="text" id="houseAddress" name="houseAddress">
+
+            
+        </form>
+        <button onclick="findHouse()">Submit</button>
+    </div>
+
+    <div>
+        <p id="ptag"></p>
+    </div>
+    
+    <script>
+        function findHouse(){
+            fetch("http://127.0.0.1:5500/houseList.json")
+            /*
+            .then(response =>{
+                //console.log(response)
+                console.log(response)
+            })*/
+            .then(response => response.json())
+
+                .then(json =>{
+                    console.log(json)
+                    console.log(json.fixed_address)
+                    console.log("geocoded_address is\n"+ json.geocoded_address.latitude)
+                })
+        }
+        /*
+        function findHouse(){
+            console.log("i am inside the findhouse function")
+            let formData = new FormData();
+            let url = 'https://barikoi.xyz/v1/api/search/NDMwMjo0WFFXS1FNM1Qw/rupantor/geocode'
+
+            let address = 'matikata rd basa 572/k barikoi'
+
+            formData.append('q', address);
+            formData.append('thana', 'yes');
+            formData.append('district', 'yes');
+            formData.append('bangla', 'yes');
+
+            fetch(url, {
+                    method: 'post',
+                    body: formData
+                })
+                .then(response => response.json())
+
+                .then(json =>{
+                    console.log(json)
+                    console.log(json.fixed_address)
+                    console.log("geocoded_address is"+ json.geocoded_address.latitude)
+                })
+
+                .catch(error => console.error('Error:', error))
+                .then((response) =>{
+                    //console.log('Success:', response)
+                    console.log('hello')
+                });
+                    
+                    
+                
+               
+        }*/
+
+        /*
+        let formData = new FormData();
+        let url = 'https://barikoi.xyz/v1/api/search/NDMwMjo0WFFXS1FNM1Qw/rupantor/geocode'
+
+        let address = 'matikata rd basa 572/k barikoi'
+
+        formData.append('q', address);
+        formData.append('thana', 'yes');
+        formData.append('district', 'yes');
+        formData.append('bangla', 'yes');
+
+        fetch(url, {
+                method: 'post',
+                body: formData
+            })
+            .then(response => response.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => console.log('Success:', response))
+        */
+            
+    </script>
+        
+</body>
+</html>

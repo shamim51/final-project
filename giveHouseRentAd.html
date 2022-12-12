@@ -1,0 +1,174 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+        crossorigin=""/>
+
+            <!-- Make sure you put this AFTER Leaflet's CSS -->
+        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+        crossorigin=""></script>
+
+        <script src="cityCorporationCoordinates.js"></script>
+        <script src="./dist/leaflet.markercluster.js"></script>
+        <script src="area/crime.js"></script>
+
+        <style>
+            #map{
+                height: 100vh;
+                }
+        </style>
+    </head>
+    <body>
+        <div>
+            <form action="">
+                <label for="houseAddress">House Address</label>
+                <input type="text" id="houseAddress" name="houseAddress">
+            </form>
+
+            <button onclick="findHouse()">Submit</button>
+        </div>
+            <div id="map">   
+        </div>
+    </body>
+
+    <script>
+        var map = L.map('map').setView([23.788212, 90.399971], 12);
+        var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxNativeZoom: 19, 
+        maxZoom: 20 }).addTo(map);
+        
+        var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        });
+ 
+        // navigator.geolocation.watchPosition(success, error);
+
+        // var marker, circle;
+
+        // function success(pos){
+        //     let lat, lng;
+        //     lat = pos.coords.latitude;
+        //     console.log(lat);
+            
+        //     lng = pos.coords.longitude;
+        //     console.log(lng);
+        //     const accuracy = pos.coords.accuracy;
+
+        //     if(marker){
+        //         map.removeLayer(marker);
+        //         map.removeLayer(circle);
+        //     }
+        //     marker = L.marker([lat, lng]).addTo(map);
+        //     circle = L.circle([lat, lng], {radius : accuracy}).addTo(map);
+
+        //     map.fitBounds(circle.getBounds())
+        // }
+
+        function error(err){
+            if(err.code === 1){
+                alert("please allow location access");
+            }
+            else{
+                alert("can't get final location");
+            }
+
+
+        }
+
+        
+        function style(feature) {
+            return {
+                fillColor: 'green',
+                weight: 2,
+                opacity: 100,
+                color: 'black',
+                dashArray: '3',
+                fillOpacity: 0
+            };
+        }
+        function style2(feature) {
+            return {
+                fillColor: 'red',
+                weight: 1,
+                opacity: 100,
+                color: 'black',
+                dashArray: '3',
+                fillOpacity: 0.9
+            };
+        }
+        
+        
+        //L.geoJSON(dhakaCityCorporation, {style:style}).addTo(map);
+                
+        
+        var markers = L.markerClusterGroup();
+                
+        function createCustomIcon (feature, latlng) {
+            let myIcon = L.icon({
+            iconUrl: 'images/crime.png',
+            shadowUrl: 'images/leaf-shadow.png',
+            iconSize:     [35, 40], // width and height of the image in pixels
+            shadowSize:   [35, 20], // width, height of optional shadow image
+            iconAnchor:   [12, 12], // point of the icon which will correspond to marker's location
+            shadowAnchor: [12, 6],  // anchor point of the shadow. should be offset
+            popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+            })
+            return markers.addLayer(L.marker(latlng, { icon: myIcon }))
+        }
+
+        
+        let myLayerOptions = {
+            pointToLayer: createCustomIcon
+        }
+
+        L.geoJSON(crime, myLayerOptions, markers).addTo(map);
+
+
+        function flyToStore(latt, lnng) {
+            const lat = latt;
+            const lng = lnng;
+            map.flyTo([lat, lng], 19, {
+                duration: 2
+            });
+        }
+
+        var homeIcon = L.icon({
+        iconUrl: './images/markerHome.png',
+        //shadowUrl: 'images/leaf-shadow.png',
+
+        iconSize:     [38, 95], // size of the icon
+        shadowSize:   [50, 64], // size of the shadow
+        iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+        shadowAnchor: [4, 62],  // the same for the shadow
+        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+        L.marker([23.819741, 90.39756], {icon:homeIcon}).addTo(map);
+    
+
+        function findHouse(){
+            fetch("http://127.0.0.1:5500/houseList.json")
+            /*
+            .then(response =>{
+                //console.log(response)
+                console.log(response)
+            })*/
+            .then(response => response.json())
+
+                .then(json =>{
+                    console.log(json)
+                    console.log(json.fixed_address)
+                    console.log("geocoded_address is\n"+ json.geocoded_address.latitude)
+                    L.marker([json.geocoded_address.latitude, json.geocoded_address.longitude], {icon:homeIcon}).addTo(map);
+                    flyToStore(json.geocoded_address.latitude, json.geocoded_address.longitude)
+                })
+        }
+    </script>
+    </html>
+    
+    
+   

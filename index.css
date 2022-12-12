@@ -1,3 +1,7 @@
+body {
+    font-family: 'Nunito Sans', sans-serif;
+}
+
 .container {
     display: flex;
     flex-direction: row;
@@ -39,6 +43,36 @@
 }
 
 .leftContainer .heading{
+    border-radius: 3%;
     text-align: center;
     color: blue;
+    background: white;
+}
+
+
+.leftContainer .heading h2 {
+    padding: 1rem;
+}
+
+.leftContainer ul.list {
+    padding: 0 1rem;
+    list-style-type: none;
+}
+.leftContainer .crime {
+    margin: 1rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 1rem;
+}
+.leftContainer li:last-child .crime {
+    border: none;
+}
+.leftContainer .crime a {
+    text-decoration: none;
+    font-size: 20px;
+    color: #ff6900;
+    font-weight: 700;
+}
+.leftContainer .crime p {
+    font-size: 14px;
+    color: #404040;
 }
