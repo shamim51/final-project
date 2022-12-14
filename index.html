@@ -46,16 +46,91 @@
     <script src="area/crimeList.js"></script>
 
     <script src="./dist/leaflet.markercluster.js"></script>
-    
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;900&display=swap" rel="stylesheet">    
 </head>
 <body>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+        }
+        header, footer {
+          display: flex;
+          flex-direction: row;
+        }
+        header .profile-thumbnail {
+          width: 50px;
+          height: 50px;
+          border-radius: 4px;
+        }
+        header .profile-name {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          margin-left: 10px;
+        }
+        header .follow-btn {
+          display: flex;
+      
+          margin: 0 0 0 auto;
+        }
+        header .follow-btn button {
+          border: 0;
+          border-radius: 3px;
+          padding: 5px;
+        }
+        header h3, header h4 {
+          display: flex;
+          margin: 0;
+        }
+        #inner p {
+          margin-bottom: 10px;
+          font-size: 20px;
+        }
+        #inner hr {
+          margin: 20px 0;
+          border-style: solid;
+          opacity: 0.1;
+        }
+        footer .stats {
+          display: flex;
+          font-size: 15px;
+        }
+        footer .stats strong {
+          font-size: 18px;
+        }
+        footer .stats .likes {
+          margin-left: 10px;
+        }
+        footer .cta {
+          margin-left: auto;
+        }
+        footer .cta button {
+          border: 0;
+          background: transparent;
+        }
+      </style>
     <div class="container">
         <div class="leftContainer">
-            <div class="heading">
-                <h1>Stories</h1>
+            <div style="background-color: aqua" class="heading">
+                 <form action="/action_page.php">
+                    <h1 style="font-family: 'Roboto', sans-serif;"><label for="details">Report Crime:</label></h1>
+                    <label>Enter title:</label>
+                    <input type="text" id="title" name="title" size="20" placeholder="       Enter title " required>
+                    <textarea id="details" name="details" rows="4" cols="50" placeholder="Enter details of the crime" required></textarea>
+                    <br><br>
+                    <label>Click on the map to get co-ordinates:</label><br>
+                    <input type="text" id="longitude" name="longitude" size="10" placeholder=" longitude " required readonly>
+                    <input type="text" id="latitude" name="latitude" size="10" placeholder=" latitude " required readonly>
+                    <br>
+                    <input type="submit" value="Map This Crime">
+                  </form>
             </div>
             <div>
+                <h1 style="text-align:center;">Stories</h1>
                 <ul class="list">
                     
                 </ul>

@@ -25,7 +25,13 @@ var map = L.map('map').setView([23.788212, 90.399971], 14);
     });
 
 
-    
+    var popup = L.popup();
+    function onMapClick(e) {
+        document.getElementById("longitude").value = e.latlng.lng;
+        document.getElementById("latitude").value = e.latlng.lat;
+    }
+     map.on('click', onMapClick);
+
     navigator.geolocation.watchPosition(success, error);
 
     var marker, circle;
@@ -117,7 +123,6 @@ var map = L.map('map').setView([23.788212, 90.399971], 14);
     let myLayerOptions = {
         pointToLayer: createCustomIcon
     }
-
     L.geoJSON(crime, myLayerOptions, markers).addTo(map);
 
     // create the GeoJSON layer
