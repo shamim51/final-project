@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Amar Dhaka</title>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
@@ -20,7 +21,7 @@
     
     <link rel="stylesheet" href="index.css">
 
-    <link rel="stylesheet" href="Theme_dark.css">
+   
     <link rel="stylesheet" href="./dist/MarkerCluster.css">
     <link rel="stylesheet" href="./dist/MarkerCluster.Default.css">
 
@@ -113,22 +114,24 @@
           background: transparent;
         }
       </style>
+      
     <div class="container">
         <div class="leftContainer">
             <div style="background-color: aqua" class="heading">
-                 <form action="/action_page.php">
+                 <form action="mapStory.php" method="post">
                     <h1 style="font-family: 'Roboto', sans-serif;"><label for="details">Report Crime:</label></h1>
                     <label>Enter title:</label>
                     <input type="text" id="title" name="title" size="20" placeholder="       Enter title " required>
                     <textarea id="details" name="details" rows="4" cols="50" placeholder="Enter details of the crime" required></textarea>
                     <br><br>
                     <label>Click on the map to get co-ordinates:</label><br>
-                    <input type="text" id="longitude" name="longitude" size="10" placeholder=" longitude " required readonly>
-                    <input type="text" id="latitude" name="latitude" size="10" placeholder=" latitude " required readonly>
+                    <input type="text" id="longitude" name="longitude"  placeholder=" longitude " required >
+                    <input type="text" id="latitude" name="latitude"  placeholder=" latitude " required>
                     <br>
                     <input type="submit" value="Map This Crime">
                   </form>
             </div>
+            
             <div>
                 <h1 style="text-align:center;">Stories</h1>
                 <ul class="list">

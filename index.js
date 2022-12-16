@@ -195,3 +195,12 @@ var map = L.map('map').setView([23.788212, 90.399971], 14);
             duration: 2
         });
     }
+
+
+    //var popup = L.popup();
+    
+    function onMapClick(e) {
+        document.getElementById("longitude").value = e.latlng.lng;
+        document.getElementById("latitude").value = e.latlng.lat;
+    }
+    map.on('click', onMapClick);
