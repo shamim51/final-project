@@ -58,6 +58,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;900&display=swap" rel="stylesheet">    
 </head>
+<script>
+$(document).ready(function(){
+    $("form").on("submit", function(event){
+        event.preventDefault();
+        var formValues= $(this).serialize();
+        $.post("mapStory.php", formValues, function(data){
+            // Display the returned data in browser
+            $("#result").html(data);
+        });
+    });
+});
+</script>
 <body>
     <style>
         body {
@@ -198,11 +210,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     <div class="container">
         <div class="leftContainer">
             <div class="heading">
-                 <form action="mapStory.php" method="post">
                  <h1 style="float:center;"> Logged in as : <strong style="color:red;"><?php echo $_SESSION['name']; ?></strong></h1>
                   <h1 style="font-family: 'Roboto', sans-serif;"><label for="details">Report Crime:</label></h1>
                    <fieldset style="color:black;background-color: bisque;">
                     <legend><strong>Enter Crime Description</strong></legend>
+                    <form>
                       <input type="text" id="title" name="title" size="20" placeholder="       Enter title " required>
                       <textarea id="details" name="details" rows="4" cols="50" placeholder="Enter details of the crime" required></textarea>
                       <br><br>
@@ -212,9 +224,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
                       <br><br>
                       <input type="checkbox" id="postAnon" name="postAnon" value="postAnon">
                       <label for="postAnon">Post Anonymously</label><br><br>
-                      <button id="submit_report" class="btn" value="submit_report">Map This Crime</button>
+                      <input type="submit" value="Map This Crime">
+                    </form>
                     </fieldset>
-                  </form>
             </div>
             
             <div>
