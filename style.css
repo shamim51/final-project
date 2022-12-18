@@ -12,6 +12,15 @@ body {
 	box-sizing: border-box;
 }
 
+.info {
+    background: #F2DEDE;
+    color: #53a942;
+    padding: 10px;
+    width: 95%;
+    border-radius: 5px;
+    margin: 20px auto;
+}
+ 
 form {
 	width: 500px;
 	border: 2px solid #ccc;
@@ -64,8 +73,11 @@ h1 {
 	text-align: center;
 	color: #fff;
 }
-
-a {
+a:visited { 
+	text-decoration: none; 
+	color: white; 
+}
+/* a {
 	float: right;
 	background: #555;
 	padding: 10px 15px;
@@ -77,4 +89,4 @@ a {
 }
 a:hover{
 	opacity: .7;
-}
+} */
