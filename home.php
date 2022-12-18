@@ -59,16 +59,29 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;900&display=swap" rel="stylesheet">    
 </head>
 <script>
-$(document).ready(function(){
-    $("form").on("submit", function(event){
-        event.preventDefault();
-        var formValues= $(this).serialize();
-        $.post("mapStory.php", formValues, function(data){
-            // Display the returned data in browser
-            $("#result").html(data);
-        });
-    });
-});
+  $(document).ready(function(){
+      $("form").on("submit", function(event){
+          event.preventDefault();
+          alrm();
+          // $("#alarmmsg").text("");
+          var formValues= $(this).serialize();
+          $.post("mapStory.php", formValues, function(data){
+              // Display the returned data in browser
+              $("#result").html(data);
+          });
+      });
+  });
+  function alrm(){
+         document.getElementById("alarmmsg").innerHTML = "Complaint Submitted";
+          setTimeout(function(){
+              document.getElementById("alarmmsg").innerHTML = '';
+              document.getElementById("longitude").value = '';
+              document.getElementById("latitude").value = '';
+              document.getElementById("title").value = '';
+              document.getElementById("details").value = '';
+          }, 3000);
+  }
+  
 </script>
 <body>
     <style>
@@ -226,6 +239,7 @@ $(document).ready(function(){
                       <label for="postAnon">Post Anonymously</label><br><br>
                       <input type="submit" value="Map This Crime">
                     </form>
+                    <p style="color:green;" id="alarmmsg"></p>
                     </fieldset>
             </div>
             
