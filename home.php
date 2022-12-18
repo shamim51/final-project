@@ -1,10 +1,15 @@
+<?php 
+session_start();
+
+if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
     <title>Amar Dhaka</title>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
@@ -157,7 +162,18 @@
         margin: 4px 2px;
         cursor: pointer;
       }
-      .topnav .login-container button {
+      .logout-container {
+        float: right;
+        padding: 6px 10px;
+        margin-top: 8px;
+        margin-right: 16px;
+        background-color: #555;
+        color: white;
+        font-size: 17px;
+        border: none;
+        cursor: pointer;
+      }
+      .topnav button {
         float: right;
         padding: 6px 10px;
         margin-top: 8px;
@@ -169,25 +185,21 @@
         cursor: pointer;
       }
 
-       .topnav .login-container button:hover {
+       .topnav .logout-container button:hover {
         background-color: green;
       }
       </style>
       
-    <div class="topnav logout-container">
-        <a class="active" href="#home">Home</a>
-        <a href="#contact">Contact</a>
-        <a href="#about">About</a>
-        <div class="login-container">
-          <form action="/action_page.php">
-            <button type="submit">Logout</button>
-          </form>
+    <div class="topnav">
+        <div class="logout-container">
+         <a href="logout.php">Logout</a>
         </div>
     </div>
     <div class="container">
         <div class="leftContainer">
             <div class="heading">
                  <form action="mapStory.php" method="post">
+                 <h1 style="float:center;"> Logged in as : <strong style="color:red;"><?php echo $_SESSION['name']; ?></strong></h1>
                   <h1 style="font-family: 'Roboto', sans-serif;"><label for="details">Report Crime:</label></h1>
                    <fieldset style="color:black;background-color: bisque;">
                     <legend><strong>Enter Crime Description</strong></legend>
@@ -200,7 +212,7 @@
                       <br><br>
                       <input type="checkbox" id="postAnon" name="postAnon" value="postAnon">
                       <label for="postAnon">Post Anonymously</label><br><br>
-                      <input type="submit" class="btn" value="Map This Crime">
+                      <button id="submit_report" class="btn" value="submit_report">Map This Crime</button>
                     </fieldset>
                   </form>
             </div>
@@ -232,5 +244,10 @@
     </div>
 </body>
 <script src="index.js"></script>
-
 </html>
+<?php 
+}else{
+     header("Location: index.php");
+     exit();
+}
+ ?>
