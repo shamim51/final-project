@@ -107,14 +107,14 @@ var map = L.map('map').setView([23.788212, 90.399971], 14);
     var markers = L.markerClusterGroup();
             
     function createCustomIcon (feature, latlng) {
-        let myIcon = L.icon({
-        iconUrl: 'images/crime.png',
-        shadowUrl: 'images/leaf-shadow.png',
-        iconSize:     [35, 40], // width and height of the image in pixels
-        shadowSize:   [35, 20], // width, height of optional shadow image
-        iconAnchor:   [12, 12], // point of the icon which will correspond to marker's location
-        shadowAnchor: [12, 6],  // anchor point of the shadow. should be offset
-        popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+            let myIcon = L.icon({
+            iconUrl: 'images/crime.png',
+            shadowUrl:'images/leaf-shadow.png',
+            iconSize:     [35, 40], // width and height of the image in pixels
+            shadowSize:   [35, 20], // width, height of optional shadow image
+            iconAnchor:   [12, 12], // point of the icon which will correspond to marker's location
+            shadowAnchor: [12, 6],  // anchor point of the shadow. should be offset
+            popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
         })
         return markers.addLayer(L.marker(latlng, { icon: myIcon }))
     }
@@ -123,11 +123,40 @@ var map = L.map('map').setView([23.788212, 90.399971], 14);
     let myLayerOptions = {
         pointToLayer: createCustomIcon
     }
-    L.geoJSON(crime, myLayerOptions, markers).addTo(map);
+    var neg = {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+            "coordinates": [
+            28.620363364135216,
+            7.932471534718275
+            ],
+        "type": "Point"
+        }
+    }
+    var crime = {
+        "type": "FeatureCollection",
+        "features": []
+    }
+    for(var i = 0;i<obj.length;i++){
+        crime.features.push(
+            {
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                  "coordinates": [
+                    obj[i].longitude,
+                    obj[i].latitude
+                  ],
+                  "type": "Point"
+                }    
+            }
+        );
+    }
+    L.geoJSON(crime, myLayerOptions, markers);
 
-    // create the GeoJSON layer
-    //var crimes = L.geoJSON(crime, myLayerOptions, markers);      
-    //map.addLayer(markers);
+    // create the GeoJSON layer      
+    map.addLayer(markers);
 
     let crimes;
     function showArea() {
@@ -161,11 +190,25 @@ var map = L.map('map').setView([23.788212, 90.399971], 14);
 
 
 
-
+ // const li = document.createElement('li');
+    // const div = document.createElement('div');
+    // const a = document.createElement('a');
+    // const p = document.createElement('p');
+    // a.addEventListener('click', () => {
+    //     flyToStore(crime);
+    // });
+    // div.classList.add('crime');
+    // a.innerText = crime.crimeTitle;
+    // a.href = '#';
+    // p.innerText = crime.crimeDescription;
+    // div.appendChild(a);
+    // div.appendChild(p);
+    // li.appendChild(div);
+    // ul.appendChild(li);
 
     function generateList() {
         const ul = document.querySelector('.list');
-        crimeList.forEach((crime) => {
+        obj.forEach((crime) => {
             const li = document.createElement('li');
             const div = document.createElement('div');
             const a = document.createElement('a');
@@ -173,24 +216,64 @@ var map = L.map('map').setView([23.788212, 90.399971], 14);
             a.addEventListener('click', () => {
                 flyToStore(crime);
             });
+            const timeofreport = document.createElement('p');
             div.classList.add('crime');
-            a.innerText = crime.properties.name;
+            a.innerText = crime.crimeTitle;
             a.href = '#';
-            p.innerText = crime.properties.address;
-
+            p.innerText = crime.crimeDescription;
+            const myArray = crime.time.split(" ");
+            timeofreport.innerHTML = "<strong>Posted at Date</strong>: "+"<i>"+myArray[0]+"</i>"+"</strong>"+",<strong>Time: <i></strong>"+myArray[1]+"</i>";
             div.appendChild(a);
+            div.appendChild(timeofreport);
             div.appendChild(p);
             li.appendChild(div);
             ul.appendChild(li);
         });
     }
+//header child-> img
+//header child-> div1
+//div1 child -> h3
+//div1 child -> h4
+//div2 child-> p
+//div2 child span
+//div2 child 
+//     <header>
+//   <img src="https://freecodecamp.s3.amazonaws.com/quincy-twitter-photo.jpg" alt="Quincy Larson's profile picture" class="profile-thumbnail">
+//   <div class="profile-name">
+//     <h3>Quincy Larson</h3>
+//     <h4>@ossia</h4>
+//   </div>
+//   <div class="follow-btn">
+//     <button>Follow</button>
+//   </div>
+// </header>
+// <div id="inner">
+//   <p>I meet so many people who are in search of that one trick that will help them work smart. Even if you work smart, you still have to work hard.</p>
+//   <span class="date">1:32 PM - 12 Jan 2018</span>
+//   <hr>
+// </div>
+// <footer>
+//   <div class="stats">
+//     <div class="Retweets">
+//       <strong>107</strong> Retweets
+//     </div>
+//     <div class="likes">
+//       <strong>431</strong> Likes
+//     </div>
+//   </div>
+//   <div class="cta">
+//     <button class="share-btn">Share</button>
+//     <button class="retweet-btn">Retweet</button>
+//     <button class="like-btn">Like</button>
+//   </div>
+// </footer>
 
     generateList();
 
 
     function flyToStore(c) {
-        const lat = c.geometry.coordinates[1];
-        const lng = c.geometry.coordinates[0];
+        const lat = c.latitude;
+        const lng = c.longitude;
         map.flyTo([lat, lng], 18, {
             duration: 2
         });

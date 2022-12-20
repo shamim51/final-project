@@ -1,8 +1,22 @@
-<?php 
+<?php
+include_once 'db_conn.php';
 session_start();
-
+$result = mysqli_query($conn,"SELECT * FROM reportedcrimes");
+$markers = array();
+while ($row = mysqli_fetch_array($result)) {
+    $markers[] = array(
+        'username' => $row['username'],
+        'crimeTitle' => $row['crimeTitle'],
+        'crimeDescription' => $row['crimeDescription'],
+        'time'=>$row['time'],
+        'latitude'=>$row['lat'],
+        'longitude'=>$row['lng']
+    );
+}
+$markersJson = json_encode($markers);
 if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,7 +95,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
               document.getElementById("details").value = '';
           }, 3000);
   }
-  
+  const obj = JSON.parse('<?= $markersJson ; ?>');
+  // console.log(obj);
 </script>
 <body>
     <style>
