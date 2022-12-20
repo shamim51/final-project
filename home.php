@@ -96,8 +96,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
               document.getElementById("title").value = '';
               document.getElementById("details").value = '';
           }, 3000);
+          location.reload();
   }
   const obj = JSON.parse('<?= $markersJson ; ?>');
+  
   // console.log(obj);
 </script>
 <body>
